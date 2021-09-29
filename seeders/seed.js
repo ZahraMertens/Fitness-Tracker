@@ -125,6 +125,10 @@ const workoutSeed = [
   },
 ];
 
+//Storeing data into database
+//Drop before create
+//Mongosh method
+//console.log(db.Workout.collection) is an object so insert workout seed into object
 db.Workout.deleteMany({})
   .then(() => db.Workout.collection.insertMany(workoutSeed))
   .then((data) => {

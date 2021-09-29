@@ -37,6 +37,8 @@ const workoutSchema = new Schema({
     ]
 })
 
+//Convert workout schema into a model in order to use it
+//const workout = mongoose.model("name of collection", "schema")
 const Workout = mongoose.model("Workout", workoutSchema);
 
 module.exports = Workout;
