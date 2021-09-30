@@ -46,15 +46,22 @@ router.post("/workouts", (req, res) => {
         .catch(err => {
             res.status(400).json(err);
         })
-
-
 })
 
 //Gets all workouts range/average and puts in in graph
 router.get("/workouts/range", (req, res) => {
     console.log("Success4");
+});
 
-
+router.get("/getCollection", (req, res) => {
+    db.getCollection("workouts")
+    .then(data => {
+        console.log(data)
+        res.json(data);
+    })
+    .catch(err => {
+        res.json(er)
+    })
 })
 
 //Not relevant for application just to understand data structure
