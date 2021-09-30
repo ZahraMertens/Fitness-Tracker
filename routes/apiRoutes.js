@@ -16,7 +16,7 @@ router.get("/workouts", (req, res) => {
         console.log(dbWorkoutData) //Returns all exercises of one workout
         res.json(dbWorkoutData);
     }).catch(err => {
-        res.json(err);
+        res.status(400).json(err);
     })
 })
 
@@ -32,13 +32,20 @@ router.put("/workouts/:id", (req, res) => {
             res.json(newExercise)
         })
         .catch(err => {
-            res.json(err)
+            res.status(400).json(err)
         })
 })
 
 //Create new workout
 router.post("/workouts", (req, res) => {
-    console.log("Success3");
+    
+    db.Workout.create(req.body)
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        })
 
 
 })
