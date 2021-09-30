@@ -18,7 +18,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
 //Is it required in server and seeds file ?
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+});
 
 app.use(routes);
 
