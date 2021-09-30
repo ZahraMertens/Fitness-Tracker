@@ -1,28 +1,39 @@
 const router = require("express").Router();
 const db = require("../models")
 
-//Get latest workout
+//Get last full workout
 router.get("/workouts", (req, res) => {
-    console.log("Success1");
-
-    db.Workout.aggregate([
+    db.Workout.aggregate([ //Adds new field to existing document(Do we want to add the field to each document or to collection?)
         {
-            $addFields: {
-                totalDuration: {
-                    $sum: "$exercises.duration"
-                }
+            $addFields:{
+                //Sums numeric values
+                //Maybe use grouping?
+                totalDuration: {$sum: "$exercises.duration"}
             }
         }
     ])
-
-
+    .then(dbWorkoutData => {
+        console.log(dbWorkoutData) //Returns all exercises of one workout
+        res.json(dbWorkoutData);
+    }).catch(err => {
+        res.json(err);
+    })
 })
 
-// Add exercise to workout
+// Add exercise to exting last workout
 router.put("/workouts/:id", (req, res) => {
-    console.log("Success2");
-
-
+    db.Workout.findByIdAndUpdate(req.params.id, 
+        {
+            $push: {
+                exercises: req.body,
+            }
+        })
+        .then((newExercise) => {
+            res.json(newExercise)
+        })
+        .catch(err => {
+            res.json(err)
+        })
 })
 
 //Create new workout
@@ -32,21 +43,23 @@ router.post("/workouts", (req, res) => {
 
 })
 
-//Gets all workouts and puts in in graph
+//Gets all workouts range/average and puts in in graph
 router.get("/workouts/range", (req, res) => {
     console.log("Success4");
 
 
 })
 
+//Not relevant for application just to understand data structure
 router.get("/getAll", (req, res) => {
-    db.Workout.find({}, (error, find) => {
-        if(error){
-            console.log(error)
-        } else {
-            res.json(find)
-        }
-    })
+
+    db.Workout.find({})
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.json(er)
+        })
 });
 
 //WHAT THE document looks like:
