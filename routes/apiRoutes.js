@@ -13,7 +13,7 @@ router.get("/workouts", (req, res) => {
         }
     ])
     .then(dbWorkoutData => {
-        console.log(dbWorkoutData) //Returns all exercises of one workout
+        console.log(dbWorkoutData) //Returns all workout documents
         res.json(dbWorkoutData);
     }).catch(err => {
         res.status(400).json(err);
@@ -22,16 +22,24 @@ router.get("/workouts", (req, res) => {
 
 // Add exercise to exting last workout
 router.put("/workouts/:id", (req, res) => {
-    db.Workout.findByIdAndUpdate(req.params.id, 
-        {
-            $push: {
-                exercises: req.body,
-            }
-        })
+    console.log(req.params.id) //61555aeb016d5a0aa05fea0c _id of workout collection
+    console.log(req.body) //returns an object
+    // {
+    //     type: 'resistance',
+    //     name: 'bench press',
+    //     weight: 123,
+    //     sets: 3,
+    //     reps: 10,
+    //     duration: 15
+    // }
+    db.Workout.findByIdAndUpdate({ _id: req.params.id }, 
+        { $push: { exercises: req.body } }, 
+        { new: true })
         .then((newExercise) => {
             res.json(newExercise)
         })
         .catch(err => {
+            console.log(err)
             res.status(400).json(err)
         })
 })
