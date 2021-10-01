@@ -24,14 +24,6 @@ router.get("/workouts", (req, res) => {
 router.put("/workouts/:id", (req, res) => {
     console.log(req.params.id) //61555aeb016d5a0aa05fea0c _id of workout collection
     console.log(req.body) //returns an object
-    // {
-    //     type: 'resistance',
-    //     name: 'bench press',
-    //     weight: 123,
-    //     sets: 3,
-    //     reps: 10,
-    //     duration: 15
-    // }
     db.Workout.findByIdAndUpdate({ _id: req.params.id }, 
         { $push: { exercises: req.body } }, 
         { new: true })
@@ -58,8 +50,27 @@ router.post("/workouts", (req, res) => {
 
 //Gets all workouts range/average and puts in in graph
 router.get("/workouts/range", (req, res) => {
-    console.log("Success4");
+    
+    db.Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: { $sum: '$exercises.duration' },
+                totalWeight: { $sum: '$exercises.weight' }
+            }
+        }
+    ])
+        .limit(7)
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        });
 });
+
+
+
+
 
 router.get("/getCollection", (req, res) => {
     db.getCollection("workouts")
