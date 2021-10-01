@@ -57,43 +57,43 @@ router.get("/workouts/range", (req, res) => {
                 totalDuration: { $sum: '$exercises.duration' },
                 totalWeight: { $sum: '$exercises.weight' }
             }
-        }
+        },
+        {$sort: {day: -1}}, //If sort was 1 it would only return the first 7 dates not the latest ones
+        {$limit: 7},
     ])
-        .limit(7)
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            res.status(400).json(err);
-        });
-});
-
-
-
-
-
-router.get("/getCollection", (req, res) => {
-    db.getCollection("workouts")
     .then(data => {
         console.log(data)
         res.json(data);
     })
     .catch(err => {
-        res.json(er)
-    })
-})
-
-//Not relevant for application just to understand data structure
-router.get("/getAll", (req, res) => {
-
-    db.Workout.find({})
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            res.json(er)
-        })
+        console.log(err)
+        res.status(400).json(err);
+    });
 });
+
+
+// router.get("/getCollection", (req, res) => {
+//     db.getCollection("workouts")
+//     .then(data => {
+//         console.log(data)
+//         res.json(data);
+//     })
+//     .catch(err => {
+//         res.json(er)
+//     })
+// })
+
+// //Not relevant for application just to understand data structure
+// router.get("/getAll", (req, res) => {
+
+//     db.Workout.find({})
+//         .then(data => {
+//             res.json(data);
+//         })
+//         .catch(err => {
+//             res.json(er)
+//         })
+// });
 
 //WHAT THE document looks like:
 // [
