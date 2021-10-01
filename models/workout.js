@@ -1,19 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// const WorkoutSchema = new Schema({
-//     day: {
-//         type: Date,
-//         default: Date.now(),
-//     },
-//     exercises: [
-//         {
-//             type: Schema.Types.ObjectId,
-//             ref: "Exercise"
-//         }
-//     ]
-// })
-
 const WorkoutSchema = new Schema({
     day: {
         type: Date,
@@ -50,8 +37,6 @@ const WorkoutSchema = new Schema({
     ]
 })
 
-//Convert workout schema into a model in order to use it
-//const workout = mongoose.model("name of collection", "schema")
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
 module.exports = Workout;
