@@ -6,8 +6,6 @@ const routes = require("./routes")
 
 const PORT = process.env.PORT || 27017;
 
-// const db = require("./models")
-
 const app = express();
 
 app.use(logger("dev"));
@@ -16,8 +14,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
-app.use(routes);
-
 //Is it required in server and seeds file ?
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
   useNewUrlParser: true,
@@ -25,6 +21,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
   useCreateIndex: true,
   useFindAndModify: false
 });
+
+app.use(routes);
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
