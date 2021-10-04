@@ -3,9 +3,9 @@ const path = require("path")
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const routes = require("./routes");
+const routes = require("./routes/index.js");
 
-const db = require("./models");
+const db = require("./models/index.js");
 
 const app = express();
 const PORT = process.env.PORT || 27017;
