@@ -1,12 +1,14 @@
+require('dotenv').config();
 const path = require("path")
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const routes = require("./routes")
+const routes = require("./routes");
 
-const PORT = process.env.PORT || 27017;
+const db = require("./models");
 
 const app = express();
+const PORT = process.env.PORT || 27017;
 
 app.use(logger("dev"));
 
@@ -15,12 +17,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
 //Is it required in server and seeds file ?
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false
-});
+mongoose.connect(
+  process.env.MONGODB_URI || 'mongodb://localhost/workout',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  }
+);
 
 app.use(routes);
 
