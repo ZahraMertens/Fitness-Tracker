@@ -16,6 +16,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
+console.log(process.env.MONGODB_URI)
 //Is it required in server and seeds file ?
 mongoose.connect(
   process.env.MONGODB_URI || 'mongodb://localhost/workout',
