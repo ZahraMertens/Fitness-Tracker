@@ -7,7 +7,6 @@ router.get("/workouts", (req, res) => {
         {
             $addFields:{
                 //Sums numeric values
-                //Maybe use grouping?
                 totalDuration: {$sum: "$exercises.duration"}
             }
         }
@@ -16,14 +15,14 @@ router.get("/workouts", (req, res) => {
         console.log(dbWorkoutData) //Returns all workout documents
         res.json(dbWorkoutData);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     })
 })
 
 // Add exercise to exting last workout
 router.put("/workouts/:id", (req, res) => {
-    console.log(req.params.id) //61555aeb016d5a0aa05fea0c _id of workout collection
-    console.log(req.body) //returns an object
+    // console.log(req.params.id) //61555aeb016d5a0aa05fea0c _id of workout collection
+    // console.log(req.body) //returns an object
     db.Workout.findByIdAndUpdate({ _id: req.params.id }, 
         { $push: { exercises: req.body } }, 
         { new: true })
@@ -32,7 +31,7 @@ router.put("/workouts/:id", (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(400).json(err)
+            res.status(500).json(err)
         })
 })
 
@@ -44,7 +43,7 @@ router.post("/workouts", (req, res) => {
             res.json(data);
         })
         .catch(err => {
-            res.status(400).json(err);
+            res.status(500).json(err);
         })
 })
 
@@ -67,33 +66,34 @@ router.get("/workouts/range", (req, res) => {
     })
     .catch(err => {
         console.log(err)
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 });
 
 
-// router.get("/getCollection", (req, res) => {
-//     db.getCollection("workouts")
-//     .then(data => {
-//         console.log(data)
-//         res.json(data);
-//     })
-//     .catch(err => {
-//         res.json(er)
-//     })
-// })
 
-// //Not relevant for application just to understand data structure
-// router.get("/getAll", (req, res) => {
+//Not relevant for application just to understand data structure
+router.get("/getCollection", (req, res) => {
+    db.getCollection("workouts")
+    .then(data => {
+        console.log(data)
+        res.json(data);
+    })
+    .catch(err => {
+        res.json(er)
+    })
+})
 
-//     db.Workout.find({})
-//         .then(data => {
-//             res.json(data);
-//         })
-//         .catch(err => {
-//             res.json(er)
-//         })
-// });
+router.get("/getAll", (req, res) => {
+
+    db.Workout.find({})
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.json(er)
+        })
+});
 
 //WHAT THE document looks like:
 // [
